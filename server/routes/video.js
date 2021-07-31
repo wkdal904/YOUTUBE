@@ -109,6 +109,18 @@ router.get('/getVideos', (req, res)=>{
         })
 
 })
+//클라에서 비디오 ID를보내고있기 때문에 ID를 이용해서 비디오 정보를 가져와야한다.
+router.post('/getVideoDetail', (req, res)=>{
+    Video.findOne({"_id":req.body.videoId})
+    //Video모델을 이용해서 비디오를 찾는다
+        .populate('writer')//이걸 해주지 않는다면 비디오의 Id만 오게된다
+        //이걸해주면 비디오의 모든 정보를 알 수 있다.
+        .exec((err, videoDetail)=>{
+            if(err) return res.status(400).send(err)
+            return res.status(200).json({success:true, videoDetail })
+        })
+
+});
 
 
 
