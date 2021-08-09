@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {Row, Col, List, Avatar} from 'antd';
 import Axios from 'axios';
 import SideVideo from './Sections/SideVideo';
-
+import Subscribe from './Sections/Subscribe';
 
 function VideoDetailPage(props) {
     const videoId = props.match.params.videoId
@@ -25,14 +25,16 @@ useEffect(() => {
     })
 }, [])//이에 맞는 라우트를 서버에 꼭 만들어줘야한다
     if(VideoDetail.writer){ 
+        const subscribeButton = VideoDetail.writer._id!==localStorage.getItem('userId') && <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />
+        //내가 나의 페이지를 볼때에는 구독 버튼이 보이지 않도록 설정
         return (
         <Row gutter={[16, 16]}>
             <Col lg={18} xs={24} >
             <div style={{width:'100%', padding:'3rem 4rem'}}>
-                <video style={{width:'100%' }} src={`http://lacalhost:5000/${VideoDetail.filePath}`} controls/>
+                <video style={{width:'100%'}} src={`http://lacalhost:5000/${VideoDetail.filePath}`} controls/>
 
                 <List.Item
-                actions>
+                actions={[subscribeButton]}>
                     <List.Item.Meta
                     //VideoDetail.writer.image를 할 수 있는이유는 populate을 해줬기 때문이다.
                     //avatar는 유저의 이미지

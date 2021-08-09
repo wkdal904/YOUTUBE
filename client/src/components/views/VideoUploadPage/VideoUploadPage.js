@@ -84,12 +84,12 @@ function VideoUploadPage(props) {
     }
 //항상 이걸작성하고 AXIOS.POST에대한 라우터를 서버쪽에 만든다!
 //먼저 리퀘스트를 보내면 서버의 index.js로 간다 
-//index에서 app.use로 라우트로 보내주면 video에서 작성하는방식이다.`
+//index에서의 app.user가 라우트로 보내주면 video에서 작성하는방식이다.`
 const onSubmit = (e) => {
     e.preventDefault();//원래 클릭하면 하려고했던것을 방지하고 우리가 하고싶은것을 사용할 수 있게 해준다
     const variables={
         writer: user.userData._id,
-        title: VideoTitle,//여기서부터는 이미 위 state에서 가지고 있어서 그래도 복사해준다
+        title: VideoTitle,//여기서부터는 이미 위 state에서 가지고 있어서 그대로 복사해준다
         description: Description,
         privacy: Private,
         filePath: FilePath,
@@ -108,10 +108,6 @@ const onSubmit = (e) => {
                 props.history.push('/')
                 //3초뒤에 업로드를 하고 루트페이지로 돌아가도록 시키는 것
             }, 3000);
-           
-           
-           
-           
         }else{
             alert('비디오 업로드에 실패했습니다.')
         }
