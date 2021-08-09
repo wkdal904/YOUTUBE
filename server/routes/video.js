@@ -6,6 +6,8 @@ const { auth } = require("../middleware/auth");
 const multer = require("multer");
 var ffmpeg = require("fluent-ffmpeg");
 const { response } = require('express');
+const { Subscriber } = require('../models/Subscriber');
+const { restart } = require('nodemon');
 
 
 //=================================
@@ -121,6 +123,37 @@ router.post('/getVideoDetail', (req, res)=>{
         })
 
 });
+
+router.post('/getSubscriptionVideos', (req, res)=>{
+    //자신의 아이디로 내가 구독중인 사람들을 찾는다
+    Subscriber.find({userFrom:req.body.userFrom })
+    .exec((err, subscriberInfo)=>{
+        if(err) return res.status(400).send(err);
+        //subscriberInfo에는 내가 구독중인사람들의 정보가 담겨있다
+        //몽고에서 보면 userfrom사람이 userto를 구독한다는 정보가 담겨있다
+        //따라서subscriberInfo정보안의 userTo를 가져와야한다
+        let subscriberUser=[];
+        subscriberInfo.map((subscriber, i)=>{
+            subscriberUser.push(subscriber.userTo);
+            //이렇게 subscriberUser에 userTo정보들이 들어가게 된다
+        })
+
+
+    //찾은 사람들의 비디오를 가져온다
+    //writer: req.body.id는 구독중인 사람이 한명이라면 사용가능하지만
+    //구독중인 사람이 많을 때에는 $in이라는 몽고메소들을 이용하면
+    //subscriberUser에 들어있는 모든 아이디를 이용해 writer들을 찾을 수 있다
+    Video.find({writer : {$in: subscriberUser}})
+    .populate('writer')//populate을 하는 이유는 writer의 정보를 받고싶은데
+    //지금은 writer의 id밖에 없기 때문이다.
+    .exec((err, videos)=>{
+        if(err) return res.status(400).send(err);
+        res.status(200).json({success:true, videos})
+        })
+    })
+
+});
+
 
 
 
