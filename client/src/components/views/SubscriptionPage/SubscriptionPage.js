@@ -1,6 +1,5 @@
 //새로운 페이지를 만들고 나서는 항상 App.js에서 route를 만들어줘야 한다.
 import React,{useEffect, useState} from 'react'
-import { FaCode, FaRegIdBadge } from "react-icons/fa";
 import { Card, Icon, Avatar, Col, Typography, Row} from 'antd';
 import Axios from 'axios';
 import moment from 'moment';
@@ -37,7 +36,7 @@ useEffect(() => {
     var seconds = Math.floor((video.duration- minutes*60));
 
 
-    return <Col lg={6} md={8} xs={23}>
+    return <Col key={index} lg={6} md={8} xs={24}>
         <div style={{position:'relative'}}>
         <a href={`/video/${video._id}`}>
         <img style={{width:'100%'}} src={`http://localhost:5000/${video.thumbnail}`}/>
