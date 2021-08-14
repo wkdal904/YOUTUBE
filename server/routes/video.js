@@ -50,10 +50,11 @@ router.post('/thumbnail', (req, res)=>{
     
     let filePath="";
     let fileDuration="";
-
+    console.log(filePath);
+    console.log(fileDuration);
 
     //비디오 정보 가져오기
-    ffmpeg.ffprobe(req.body.url, function(err, metadata){
+    ffmpeg.ffprobe(req.body.filePath, function(err, metadata){
         console.dir(metadata);//probe가 metadata를가져와준다
         console.log(metadata.format.duration);
         fileDuration=metadata.format.duration;
@@ -61,7 +62,7 @@ router.post('/thumbnail', (req, res)=>{
 
     
     //썸네일 생성
-    ffmpeg(req.body.url)//클라에서 온 비디오 저장 경로
+    ffmpeg(req.body.filePath)//클라에서 온 비디오 저장 경로
     .on('filenames', function(filenames){
         console.log('Will generate'+filenames.join(', '))
         console.log(filenames)
@@ -71,7 +72,7 @@ router.post('/thumbnail', (req, res)=>{
     .on('end', function () {
         //썸네일 생성후에 무엇을 할 것인지 여기에 작성한다
         console.log('Screenshots taken');
-        return res.json({success: true, url:filePath, fileDuration:fileDuration})
+        return res.json({success: true, filePath:filePath, fileDuration:fileDuration})
     })
     .on('error', function (err){
         //에러발생시의 어떻게 동작할 것인지
@@ -118,8 +119,8 @@ router.post('/getVideoDetail', (req, res)=>{
         .populate('writer')//이걸 해주지 않는다면 비디오의 Id만 오게된다
         //이걸해주면 비디오의 모든 정보를 알 수 있다.
         .exec((err, videoDetail)=>{
-            if(err) return res.status(400).send(err)
-            return res.status(200).json({success:true, videoDetail })
+            if(err) return res.status(400).send(err);
+            res.status(200).json({success:true, videoDetail })
         })
 
 });
