@@ -60,18 +60,18 @@ function VideoUploadPage(props) {
         Axios.post('/api/video/uploadfiles', formData, config)
         .then(response => {
             if(response.data.success){
-
+                console.log(response.data)
                 let variable={
-                    url: response.data.filePath,
+                    filePath: response.data.filePath,
                     fileName: response.data.fileName
                 }
-                setFilePath(response.data.url)
-
+                setFilePath(response.data.filePath)
+                console.log(FilePath)
                 Axios.post('/api/video/thumbnail', variable)
                 .then(response=>{
                     if(response.data.success){
                         setDuration(response.data.fileDuration)
-                        setThumbnailPath(response.data.url)
+                        setThumbnailPath(response.data.filePath)
                     }else{
                         alert("썸네일 생성에 실패 했습니다.")
                     }
@@ -93,7 +93,7 @@ const onSubmit = (e) => {
         description: Description,
         privacy: Private,
         filePath: FilePath,
-        category: Category,
+        catogory: Category,
         duration: Duration,
         thumbnail: ThumbnailPath
 

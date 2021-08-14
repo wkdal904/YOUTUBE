@@ -55,7 +55,7 @@ function Comment(props) {
                     //처음화면에서는 responseTo가 없는 메인댓글만 보여주기 위해서 위와같은 조건 추가
                     <React.Fragment>
                     <SingleComment refreshFunction={props.refreshFunction} comment={comment} postId={videoId} />
-                    <ReplyComment commentLists={props.commentLists}/>
+                    <ReplyComment refreshFunction={props.refreshFunction} postId={videoId} parentCommentId={comment._id} commentLists={props.commentLists}/>
                     </React.Fragment>//항상 리액트에서는 div나 React.Fragment로 감싸줘야한다
                     
                     ) 

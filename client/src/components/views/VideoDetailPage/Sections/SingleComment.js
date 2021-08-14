@@ -12,7 +12,7 @@ function SingleComment(props) {
 //처음에는 숨겨져있어야 하기 때문에 false
     const [CommentValue, setCommentValue] = useState("")
     const onHandleChange =(event) =>{
-        setCommentValue(event.currentTarget.CommentValue)
+        setCommentValue(event.currentTarget.value)
     }//댓글을 쓸수 있게 해주는 부분
     
     const onSubmit = (event) =>{
